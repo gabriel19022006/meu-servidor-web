@@ -5,70 +5,83 @@
     <style>
         body {
             text-align: center;
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
         }
 
         h1 {
-            color: #333;
+            color: #3498db;
+            margin-bottom: 20px;
         }
 
-        #choices {
+        .choices {
             margin-top: 20px;
         }
 
         button {
-            margin: 5px;
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 15px 30px;
+            font-size: 18px;
+            margin: 10px;
             cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #3498db;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
         }
 
         #result {
+            margin-top: 30px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        #scores {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .choice-display {
             margin-top: 20px;
             font-size: 18px;
-            font-weight: bold;
-        }
-
-        .win {
-            color: green;
-        }
-
-        .lose {
-            color: red;
-        }
-
-        .tie {
-            color: orange;
         }
     </style>
 </head>
 <body>
     <h1>Pedra, Papel, Tesoura</h1>
     <p>Escolha:</p>
-    <div id="choices">
+    <div class="choices">
         <button onclick="playGame('pedra')">Pedra</button>
         <button onclick="playGame('papel')">Papel</button>
         <button onclick="playGame('tesoura')">Tesoura</button>
     </div>
+    <div class="choice-display">
+        <p>Você escolheu: <span id="userChoiceDisplay"></span></p>
+        <p>Computador escolheu: <span id="computerChoiceDisplay"></span></p>
+    </div>
     <p id="result"></p>
+    <p id="scores">Você: 0 | Computador: 0</p>
 
     <script>
+        let userScore = 0;
+        let computerScore = 0;
+
         function playGame(userChoice) {
             const choices = ['pedra', 'papel', 'tesoura'];
-            const randomIndex = Math.floor(Math.random() * choices.length);
-            const computerChoice = choices[randomIndex];
-            const resultElement = document.getElementById("result");
+            const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+
+            document.getElementById("userChoiceDisplay").textContent = userChoice;
+            document.getElementById("computerChoiceDisplay").textContent = computerChoice;
+
             const result = determineWinner(userChoice, computerChoice);
-
-            resultElement.textContent = `Você escolheu ${userChoice}, o computador escolheu ${computerChoice}. ${result}`;
-
-            if (result === "Empate!"){
-                resultElement.className = "tie";
-            } else if (result === "Você venceu!"){
-                resultElement.className = "win";
-            } else {
-                resultElement.className = "lose";
-            }
+            updateResult(result, userChoice, computerChoice);
         }
 
         function determineWinner(userChoice, computerChoice) {
@@ -79,10 +92,17 @@
                 (userChoice === 'papel' && computerChoice === 'pedra') ||
                 (userChoice === 'tesoura' && computerChoice === 'papel')
             ) {
+                userScore++;
                 return "Você venceu!";
             } else {
-                return "O computador venceu!";
+                computerScore++;
+                return "Computador venceu!";
             }
+        }
+
+        function updateResult(result, userChoice, computerChoice) {
+            document.getElementById("result").textContent = result;
+            document.getElementById("scores").textContent = `Você: ${userScore} | Computador: ${computerScore}`;
         }
     </script>
 </body>
