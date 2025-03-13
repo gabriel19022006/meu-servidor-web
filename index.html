@@ -1,61 +1,87 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Rock, Paper, Scissors</title>
+    <title>Pedra, Papel, Tesoura</title>
     <style>
         body {
             text-align: center;
             font-family: Arial, sans-serif;
         }
-        
+
         h1 {
             color: #333;
         }
-        
+
         #choices {
             margin-top: 20px;
         }
-        
+
         button {
             margin: 5px;
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
         }
-        
+
         #result {
             margin-top: 20px;
             font-size: 18px;
+            font-weight: bold;
+        }
+
+        .win {
+            color: green;
+        }
+
+        .lose {
+            color: red;
+        }
+
+        .tie {
+            color: orange;
         }
     </style>
 </head>
 <body>
-    <h1>Rock, Paper, Scissors</h1>
-    <p>Select your choice:</p>
+    <h1>Pedra, Papel, Tesoura</h1>
+    <p>Escolha:</p>
     <div id="choices">
-        <button onclick="playGame('rock')">Rock</button>
-        <button onclick="playGame('paper')">Paper</button>
-        <button onclick="playGame('scissors')">Scissors</button>
+        <button onclick="playGame('pedra')">Pedra</button>
+        <button onclick="playGame('papel')">Papel</button>
+        <button onclick="playGame('tesoura')">Tesoura</button>
     </div>
     <p id="result"></p>
 
     <script>
         function playGame(userChoice) {
-            var choices = ['rock', 'paper', 'scissors'];
-            var randomIndex = Math.floor(Math.random() * choices.length);
-            var computerChoice = choices[randomIndex];
-            var result = document.getElementById("result");
-            
-            if (userChoice === computerChoice) {
-                result.textContent = "It's a tie!";
-            } else if (
-                (userChoice === 'rock' && computerChoice === 'scissors') ||
-                (userChoice === 'paper' && computerChoice === 'rock') ||
-                (userChoice === 'scissors' && computerChoice === 'paper')
-            ) {
-                result.textContent = "You win!";
+            const choices = ['pedra', 'papel', 'tesoura'];
+            const randomIndex = Math.floor(Math.random() * choices.length);
+            const computerChoice = choices[randomIndex];
+            const resultElement = document.getElementById("result");
+            const result = determineWinner(userChoice, computerChoice);
+
+            resultElement.textContent = `Você escolheu ${userChoice}, o computador escolheu ${computerChoice}. ${result}`;
+
+            if (result === "Empate!"){
+                resultElement.className = "tie";
+            } else if (result === "Você venceu!"){
+                resultElement.className = "win";
             } else {
-                result.textContent = "Computer wins!";
+                resultElement.className = "lose";
+            }
+        }
+
+        function determineWinner(userChoice, computerChoice) {
+            if (userChoice === computerChoice) {
+                return "Empate!";
+            } else if (
+                (userChoice === 'pedra' && computerChoice === 'tesoura') ||
+                (userChoice === 'papel' && computerChoice === 'pedra') ||
+                (userChoice === 'tesoura' && computerChoice === 'papel')
+            ) {
+                return "Você venceu!";
+            } else {
+                return "O computador venceu!";
             }
         }
     </script>
